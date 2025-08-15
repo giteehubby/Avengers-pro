@@ -1,0 +1,82 @@
+{
+  "anthropic/claude-opus-4.1": {
+    "arc-agi-v1": 22.12,
+    "gpqa": 74.24,
+    "hle": 6.41,
+    "tau2bench": 74,
+    "livecodebench": 64.07,
+    "simpleqa": 31.0,
+    "healthbench": 43.31,
+    "aime": 36.77
+  },
+  "anthropic/claude-sonnet-4": {
+    "arc-agi-v1": 16.15,
+    "gpqa": 68.69,
+    "hle": 4.6,
+    "tau2bench": 64.0,
+    "livecodebench": 59.05,
+    "simpleqa": 15,
+    "healthbench": 39.86,
+    "aime": 36.77
+  },
+  "google/gemini-2.5-flash": {
+    "arc-agi-v1": 9.62,
+    "gpqa": 21.72,
+    "hle": 7.2,
+    "tau2bench": 36.67,
+    "livecodebench": 62.84,
+    "simpleqa": 28.99,
+    "healthbench": 45.10,
+    "aime": 63.33
+  },
+  "google/gemini-2.5-pro": {
+    "arc-agi-v1": 33.08,
+    "gpqa": 84.85,
+    "hle": 23.09,
+    "tau2bench": 62.0,
+    "livecodebench": 78.67,
+    "simpleqa": 54.80,
+    "healthbench": 49.87,
+    "aime": 90
+  },
+  "openai/gpt-5-chat": {
+    "arc-agi-v1": 6.73,
+    "gpqa": 73.73,
+    "hle": 7.8,
+    "tau2bench": null,
+    "livecodebench": 63.60,
+    "simpleqa": 40.2,
+    "healthbench": 54.32,
+    "aime": 71.67
+  },
+  "qwen/qwen3-235b-a22b-2507": {
+    "arc-agi-v1": 9.22,
+    "gpqa": 58.59,
+    "hle": 9.22,
+    "tau2bench": 53.33,
+    "livecodebench": 66.26,
+    "simpleqa": 53.00,
+    "healthbench": 50.57,
+    "aime": 76.67
+  },
+  "qwen/qwen3-235b-a22b-thinking-2507": {
+    "arc-agi-v1": 19.23,
+    "gpqa": 80.81,
+    "hle": 12.68,
+    "tau2bench": 53.33,
+    "livecodebench": 77.99,
+    "simpleqa": 44.6,
+    "healthbench": 56.00,
+    "aime": 86.67
+  },
+  "openai/gpt-5-medium": {
+    "arc-agi-v1": 44.42,
+    "gpqa": 84.85,
+    "hle": 26.2,
+    "tau2bench": 82,
+    "livecodebench": 88.44,
+    "simpleqa": 47.60,
+    "healthbench": 64.83,
+    "aime": 93.33
+  }
+}
