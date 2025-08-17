@@ -657,7 +657,13 @@ class SimpleClusterRouter:
                 current_accuracy = results['correct_routes'] / len(results['routing_details'])
                 pbar.set_postfix({'accuracy': f'{current_accuracy:.4f}'})
 
-        results['accuracy'] = results['correct_routes'] / results['total_queries']
+        # Calculate accuracy as simple average across datasets (not weighted by sample count)
+        dataset_accuracies = []
+        for dataset, perf in results['dataset_performance'].items():
+            if perf['total'] > 0:
+                dataset_accuracies.append(perf['correct'] / perf['total'])
+        
+        results['accuracy'] = sum(dataset_accuracies) / len(dataset_accuracies) if dataset_accuracies else 0.0
         
         # Add cost analysis using filtered test data
         cost_analysis = self._analyze_routing_costs(actual_test_data, results['routing_details'], results)
@@ -736,7 +742,7 @@ class SimpleClusterRouter:
         avg_cost_per_query = total_cost / total_queries if total_queries > 0 else 0.0
         cost_per_correct = correct_cost / correct_routes if correct_routes > 0 else 0.0
         
-        # Cost efficiency: accuracy per unit cost
+        # Cost efficiency: accuracy per unit cost (using simple average accuracy)
         overall_cost_efficiency = accuracy / (avg_cost_per_query + 1e-8)
         
         cost_analysis = {
@@ -954,7 +960,7 @@ class SimpleClusterRouter:
         if self.config.excluded_models or self.config.excluded_datasets:
             print()
         
-        print(f"Overall Accuracy: {results['accuracy']:.4f} ({results['correct_routes']}/{results['total_queries']})")
+        print(f"Overall Accuracy: {results['accuracy']:.4f}")
         
         # Load baseline scores for comparison
         baseline_scores = self._load_baseline_scores()
