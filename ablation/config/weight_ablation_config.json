@@ -1,6 +1,6 @@
 {
   "train_ratio": 0.7,
-  "seed": 42,
+  "seed": 2013,
   "n_clusters": 25,
   "max_router": 1,
   "top_k": 3,

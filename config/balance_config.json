@@ -11,12 +11,12 @@
   "embedding_model": "Qwen3-Embedding-8B",
   "embedding_base_url": "http://172.30.5.197:8000/v1",
   "embedding_api_key": "inplaceholder",
-  "cost_sensitivity": 0.68,
-  "performance_weight": 0.32,
+  "cost_sensitivity": 0.55,
+  "performance_weight": 0.45,
   "min_accuracy_threshold": 0.0,
   "budget_limit": null,
   "excluded_models": [],
-  "excluded_datasets": ["healthbench", "aime"],
+  "excluded_datasets": [],
   "dataset_exclusion_mode": "soft",
   "export_cluster": null
 }
