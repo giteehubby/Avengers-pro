@@ -1,4 +1,4 @@
-# Avengers-Pro: Making GPT-5 Cheaper and Better via Performance–Efficiency Optimized Routing
+# Beyond GPT-5: Making LLMs Cheaper and Better \\via Performance–Efficiency Optimized Routing
 
 <div align="center">
 
@@ -6,11 +6,11 @@
 
 **A test-time routing framework that ensembles LLMs of varying capacities and efficiencies**
 
-[![arXiv](https://img.shields.io/badge/arXiv-XXXX.XXXXX-b31b1b.svg)](https://arxiv.org/abs/XXXX.XXXXX)
+[![arXiv](https://img.shields.io/badge/arXiv-Coming%20Soon-b31b1b.svg)](#)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-<!-- 📄 **Paper**: [ArXiv Link Coming Soon]() -->
+📄 **Paper**: [Technical Report](paper/paper.pdf) | ArXiv Coming Soon  
 <!-- 📧 **Contact**: [author1@email.com](mailto:author1@email.com), [author2@email.com](mailto:author2@email.com) -->
 
 </div>
@@ -179,17 +179,6 @@ python simple_cluster_router.py \
   --input data/training.json \
   --export_cluster models/ \
   --clusters 32
-```
-
-## 📄 Citation
-
-```bibtex
-@article{avengers-pro-2024,
-  title={Avengers-Pro: Test-Time Routing Framework for Large Language Models},
-  author={Author Names},
-  journal={arXiv preprint arXiv:XXXX.XXXXX},
-  year={2024}
-}
 ```
 
 ## 📝 License
