@@ -23,9 +23,9 @@ Balancing performance and efficiency is a central challenge in large language mo
 
 The **Avengers-Pro** embeds and clusters incoming queries, then routes each to the most suitable model based on a performance-efficiency score. Across 6 challenging benchmarks and 8 leading models—including GPT-5-medium, Gemini-2.5-pro, and Claude-opus-4.1—the **Avengers-Pro** achieves state-of-the-art results:
 
-- 🏆 **+8% accuracy** improvement over the strongest single model (GPT-5-medium)
-- 💰 **−42% cost reduction** while maintaining equivalent accuracy  
-- ⚡ **−74% cost reduction** while achieving ~90% of peak performance
+- 🏆 **+7% accuracy** improvement over the strongest single model (GPT-5-medium)
+- 💰 **−27% cost reduction** while maintaining equivalent accuracy  
+- ⚡ **−63% cost reduction** while achieving ~90% of peak performance
 - 🎯 **Pareto-optimal** performance across all accuracy-cost trade-offs
 
 ## 📊 Experimental Results
@@ -37,7 +37,7 @@ The performance and efficiency of *Avengers-Pro* vs. single models. **Bold** ind
 | **Setting** | **ARC-AGI** | **GPQA-Diamond** | **HLE** | **LiveCodeBench** | **SimpleQA** | **τ²-bench** | **Avg. A** | **Cost** |
 |-------------|-------------|------------------|---------|-------------------|--------------|--------------|------------|----------|
 | **Gemini-2.5-flash** | 9.62 | 21.72 | 7.20 | 62.84 | 28.99 | 36.67 | 27.84 | $7.10 |
-| **Gemini-2.5-pro** | 33.08 | 84.85 | 23.09 | 78.67 | 54.80 | 62.00 | 55.19 | $94.87 |
+| **Gemini-2.5-pro** | 33.08 | 84.85 | 23.09 | 78.67 | 54.80 | 62.00 | 56.08 | $94.87 |
 | **Claude-4.1-opus** | 22.12 | 74.24 | 6.41 | 64.07 | 31.00 | 74.00 | 45.31 | $117.40 |
 | **Claude-4-sonnet** | 16.15 | 68.69 | 4.60 | 59.05 | 15.00 | 64.00 | 37.92 | $25.35 |
 | **Qwen3** | 9.22 | 58.59 | 9.22 | 66.26 | 53.00 | 53.33 | 41.60 | $2.73 |
@@ -45,21 +45,22 @@ The performance and efficiency of *Avengers-Pro* vs. single models. **Bold** ind
 | **GPT-5-chat** | 6.73 | 73.73 | 7.80 | 63.60 | 40.20 | - | 38.41 | $4.04 |
 | **GPT-5-medium** | 44.42 | 84.85 | **26.20** | 88.44 | 47.60 | **82.00** | 62.25 | $47.96 |
 | | | | | | | | | |
-| ***Avengers-Pro* (α=0)** | 11.67 | 61.67 | 9.33 | 67.51 | 51.33 | 0.00 | 44.63 | $1.19 |
-| ***Avengers-Pro* (α=0.3)¹** | 31.67 | 85.00 | 8.00 | 78.23 | **54.67** | 73.33 | 56.91 | $12.21 |
-| ***Avengers-Pro* (α=0.45)²** | 31.67 | **86.67** | 21.33 | 83.91 | **54.67** | 80.00 | 62.28 | $27.66 |
-| ***Avengers-Pro* (α=0.8)³** | **53.33** | **86.67** | 26.00 | **89.91** | **54.67** | 80.00 | **67.26** | $47.93 |
-| ***Avengers-Pro* (α=1)** | **53.33** | 83.33 | 25.33 | **89.91** | 53.33 | 80.00 | 66.62 | $49.70 |
+| ***Avengers-Pro* (α=0)** | 15.33 | 58.67 | 10.13 | 66.94 | 46.27 | 0.00 | 32.89 | $1.08 |
+| ***Avengers-Pro* (α=0.25)¹** | 29.33 | 67.00 | 10.00 | 76.53 | 53.60 | 72.89 | 51.56 | $9.69 |
+| ***Avengers-Pro* (α=0.39)²** | 29.33 | 78.67 | 12.67 | 84.79 | 55.07 | 76.89 | 56.24 | $17.81 |
+| ***Avengers-Pro* (α=0.53)³** | 51.67 | 80.00 | 25.46 | 87.45 | 54.93 | 76.44 | 62.66 | $35.05 |
+| ***Avengers-Pro* (α=0.8)** | **59.67** | 81.00 | 27.60 | 89.34 | **56.93** | 78.22 | 65.46 | $44.65 |
+| ***Avengers-Pro* (α=1)** | **59.67** | **85.67** | 28.67 | **89.59** | 56.40 | 80.00 | **66.66** | $47.13 |
 
 **Key Findings:**
-- ¹ *α=0.3*: Reaches 90% of GPT-5-medium's performance at **74% lower cost**
-- ² *α=0.45*: Matches GPT-5-medium's average accuracy while cutting cost by **42%**  
-- ³ *α=0.8*: Surpasses GPT-5-medium in average accuracy with **8% performance gain**
+- ¹ *α=0.25*: With **7%** performance gain over GPT-5-medium
+- ² *α=0.39*: Reaches 90% of GPT-5-medium's performance at **63%** lower cost
+- ³ *α=0.53*: Matches GPT-5-medium's average accuracy while cutting cost by **27%**
 
 ### Performance-Cost Trade-offs
 ![Weight Ablation](assets/weight_ablation_combined.png)
 
-*We gradually increase the trade-off parameter α, placing more weight on performance over efficiency. As α increases, the average accuracy increases rapidly for small α and then plateaus near α≈0.8. On the other hand, as α increases, cost remains low until about α≈0.45 before rising sharply. These trends reveal two elbows (around 0.45 and 0.8) that offer favorable trade-offs.*
+*We gradually increase the trade-off parameter α, placing more weight on performance over efficiency. As α increases, the average accuracy increases rapidly for small α and then plateaus near α≈0.6. On the other hand, as α increases, cost remains low until about α≈0.4 before rising sharply. These trends reveal two elbows (around 0.4 and 0.6) that offer favorable trade-offs.*
 
 ### Model Selection Distribution
 ![Model Selection](assets/model_selection_pies.png)
@@ -160,7 +161,6 @@ python balance_cluster_router.py \
   --clusters 64 \
   --performance_weight 0.8 \
   --cost_sensitivity 0.2 \
-  --min_accuracy 0.6 \
   --export_cluster models/
 ```
 
