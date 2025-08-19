@@ -6,11 +6,11 @@
 
 **A test-time routing framework that ensembles LLMs of varying capacities and efficiencies**
 
-[![arXiv](https://img.shields.io/badge/arXiv-Coming%20Soon-b31b1b.svg)](#)
+[![arXiv](https://img.shields.io/badge/arXiv-2508.12631-b31b1b.svg)](https://arxiv.org/abs/2508.12631)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-📄 **Paper**: [Technical Report](paper/paper.pdf) | ArXiv Coming Soon  
+📄 **Paper**: [ArXiv](https://arxiv.org/abs/2508.12631)  
 <!-- 📧 **Contact**: [author1@email.com](mailto:author1@email.com), [author2@email.com](mailto:author2@email.com) -->
 
 </div>
