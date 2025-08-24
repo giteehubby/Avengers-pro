@@ -185,6 +185,10 @@ python simple_cluster_router.py \
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=ZhangYiqun018/AvengersPro&type=Date)](https://www.star-history.com/#ZhangYiqun018/AvengersPro&Date)
+
 ---
 
 **Project Lead:** hushuyue@pjlab.org.cn, zhangyiqun344@gmail.com
