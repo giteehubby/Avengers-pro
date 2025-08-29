@@ -196,3 +196,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 <div align="center">
 <i>For detailed technical implementation and comprehensive experimental results, please refer to our paper.</i>
 </div>
+
+```cite
+@article{zhang2025beyond,
+  title={Beyond GPT-5: Making LLMs Cheaper and Better via Performance-Efficiency Optimized Routing},
+  author={Zhang, Yiqun and Li, Hao and Chen, Jianhao and Zhang, Hangfan and Ye, Peng and Bai, Lei and Hu, Shuyue},
+  journal={arXiv preprint arXiv:2508.12631},
+  year={2025}
+}
+```
