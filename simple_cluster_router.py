@@ -1090,6 +1090,13 @@ class SimpleClusterRouter:
         # Evaluate routing
         results = self.evaluate_routing(test_data)
         
+        # Save results if path specified in config
+        if self.config.results_path:
+            import os
+            os.makedirs(os.path.dirname(self.config.results_path), exist_ok=True)
+            with open(self.config.results_path, "w", encoding='utf-8') as f:
+                json.dump(results, f, indent=2, ensure_ascii=False)
+        
         # Print results
         self.print_evaluation_results(results, test_data)
         
@@ -1114,6 +1121,9 @@ Examples:
 
     # Override default parameters  
     python simple_cluster_router.py --input data.json --clusters 64 --train_ratio 0.8
+
+    # Use custom results path
+    python simple_cluster_router.py --input data.json --results_path results/custom_results.json
 
     # Use configuration file
     python simple_cluster_router.py --config config.json --input data.json
@@ -1147,6 +1157,8 @@ Examples:
                        help='Dataset exclusion mode: soft (exclude from eval only) or hard (exclude completely)')
     parser.add_argument('--export_cluster', type=str,
                        help='Directory path to export trained cluster models (normalizer, centers, rankings)')
+    parser.add_argument('--results_path', type=str,
+                       help='Path to save routing results JSON file (alternative to --output)')
     
     args = parser.parse_args()
     
@@ -1180,7 +1192,8 @@ Examples:
                 excluded_models=excluded_models,
                 excluded_datasets=excluded_datasets,
                 dataset_exclusion_mode=args.dataset_exclusion_mode,
-                export_cluster=args.export_cluster
+                export_cluster=args.export_cluster,
+                results_path=args.results_path
             )
         
         logger.info(f"Configuration: {config.to_dict()}")

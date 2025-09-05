@@ -178,8 +178,11 @@ python simple_cluster_router.py \
 python simple_cluster_router.py \
   --input data/training.json \
   --export_cluster models/ \
-  --clusters 32
+  --clusters 32 \
+  --results_path results/custom_results.json
 ```
+
+
 
 ## 📝 License
 

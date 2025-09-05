@@ -50,9 +50,9 @@ class SimpleClusterConfig:
     max_tokens: int = 7500  # Conservative limit to avoid API errors
     
     # Embedding service configuration
-    embedding_model: str = "text-embedding-3-large"
-    embedding_base_url: str = "http://172.30.5.197:8000/v1"
-    embedding_api_key: str = "inplaceholder"
+    embedding_model: str = "Qwen/Qwen3-Embedding-4B"
+    embedding_base_url: str = "https://api.siliconflow.cn/v1"
+    embedding_api_key: str = "sk-baifokazntjlmvsfklleapxbhbcfwyeibeqghfglivxtqwyw"
     
     # Balance router parameters
     cost_sensitivity: float = 0.3  # Weight for cost consideration (0.0-1.0)
@@ -69,6 +69,9 @@ class SimpleClusterConfig:
     
     # Model export parameters
     export_cluster: Optional[str] = None  # Path to export trained cluster models (normalizer, centers, rankings)
+    
+    # Results output parameters
+    results_path: Optional[str] = None  # Path to save routing results (JSON format)
     
     def __post_init__(self):
         """Validate configuration after initialization."""
@@ -161,6 +164,7 @@ class SimpleClusterConfig:
             "EXCLUDED_MODELS": ("excluded_models", str),  # Comma-separated string
             "EXCLUDED_DATASETS": ("excluded_datasets", str),  # Comma-separated string
             "DATASET_EXCLUSION_MODE": ("dataset_exclusion_mode", str),
+            "RESULTS_PATH": ("results_path", str),
         }
         
         for env_var, (attr_name, attr_type) in env_mappings.items():
