@@ -50,7 +50,7 @@ class SimpleClusterConfig:
     max_tokens: int = 7500  # Conservative limit to avoid API errors
     
     # Embedding service configuration
-    embedding_model: str = "Qwen/Qwen3-Embedding-4B"
+    embedding_model: str = "Qwen/Qwen3-Embedding-8B"
     embedding_base_url: str = "https://api.siliconflow.cn/v1"
     embedding_api_key: str = "sk-baifokazntjlmvsfklleapxbhbcfwyeibeqghfglivxtqwyw"
     
