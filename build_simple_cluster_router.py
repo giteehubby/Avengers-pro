@@ -155,7 +155,7 @@ class SimpleClusterRouter:
         
         data = []
         valid_items = 0
-        
+        # import pdb; pdb.set_trace()
         try:
             with open(self.config.data_path, 'r', encoding='utf-8') as f:
                 for line_num, line in enumerate(f, 1):
@@ -475,6 +475,12 @@ class SimpleClusterRouter:
             with open(metadata_path, 'w', encoding='utf-8') as f:
                 json.dump(metadata, f, indent=2, ensure_ascii=False)
             self.logger.info(f"Exported metadata to {metadata_path}")
+
+            # Export config
+            config_path = export_dir / "config.json"
+            with open(config_path, 'w', encoding='utf-8') as f:
+                json.dump(self.config.to_dict(), f, indent=2, ensure_ascii=False)
+            self.logger.info(f"Exported config to {config_path}")
             
             print(f"✅ Successfully exported cluster models to: {export_dir}")
             
@@ -1161,36 +1167,11 @@ Examples:
         # Initialize and run router
         logger.info("Initializing Simple Cluster Router")
         router = SimpleClusterRouter(config)
+        # import pdb; pdb.set_trace()
         
         logger.info("Starting routing evaluation")
         results = router.run_routing()
         
-        # Save results if output path specified
-        if args.output:
-            from datetime import datetime
-            results_serializable = {
-                'timestamp': datetime.now().isoformat(),
-                'config': config.to_dict(),
-                'results': {
-                    'accuracy': results['accuracy'],
-                    'correct_routes': results['correct_routes'],
-                    'total_queries': results['total_queries'],
-                    'dataset_performance': dict(results['dataset_performance']),
-                    'model_selection_stats': dict(results['model_selection_stats'])
-                }
-            }
-            
-            # Ensure output is in results directory
-            output_path = Path("results") / Path(args.output).name
-            output_path.parent.mkdir(parents=True, exist_ok=True)
-            
-            with open(output_path, 'w', encoding='utf-8') as f:
-                json.dump(results_serializable, f, indent=2, ensure_ascii=False)
-            
-            logger.info(f"Results saved to: {output_path}")
-            print(f"\nResults saved to: {output_path}")
-        
-        logger.info("Routing evaluation completed successfully")
         
     except Exception as e:
         logger.error(f"Error during execution: {e}")
@@ -1202,3 +1183,5 @@ Examples:
 
 if __name__ == "__main__":
     main()
+
+# python build_simple_cluster_router.py --cluster 4 --input data/validation_results.jsonl --output results/result.json --export_cluster models/val_0

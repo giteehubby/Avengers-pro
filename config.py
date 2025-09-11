@@ -240,6 +240,8 @@ class SimpleClusterConfig:
             'excluded_datasets': self.excluded_datasets,
             'dataset_exclusion_mode': self.dataset_exclusion_mode,
             'export_cluster': self.export_cluster,
+            'embedding_base_url': self.embedding_base_url,
+            'embedding_api_key': self.embedding_api_key,
         }
 
 
