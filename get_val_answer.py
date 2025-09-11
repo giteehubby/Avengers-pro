@@ -234,7 +234,7 @@ def save_results(results_dict: Dict, output_file: str):
     # Write to JSONL format
     with open(output_file, 'w', encoding='utf-8') as f:
         for record in results_list:
-            f.write(json.dumps(record, ensure_ascii=False) + '\\n')
+            f.write(json.dumps(record, ensure_ascii=False) + '\n')
     
     tqdm.write(f"\\nResults saved to {output_file}")
     tqdm.write(f"Total records: {len(results_list)}")
@@ -243,7 +243,7 @@ def print_summary_stats(results_dict: Dict, models: List[str]):
     """
     Print summary statistics for all models
     """
-    print("\\n" + "="*60)
+    print("\n" + "="*60)
     print("SUMMARY STATISTICS")
     print("="*60)
     
@@ -343,7 +343,7 @@ def get_model_answers_parallel(val_dataset: CureBenchDataset, models: List[str],
     # 使用tqdm和ThreadPoolExecutor并行处理
     total_tasks = len(tasks)
     completed_tasks = 0
-    save_interval = max(1, total_tasks // 100)  # 每1%保存一次
+    save_interval = max(1, total_tasks // 10)  # 每10%保存一次
     # import pdb; pdb.set_trace()
     
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
