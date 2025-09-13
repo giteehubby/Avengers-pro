@@ -349,7 +349,17 @@ class SimpleClusterRouter:
         self.cluster_centers = self.kmeans_model.cluster_centers_
         
         print(f"Clustering completed. Cluster centers shape: {self.cluster_centers.shape}")
-        
+
+        #######################记录聚类情况#######################
+        id2label = {train_data[i]['index']:str(label) for i,label in enumerate(cluster_labels)}
+        if not os.path.exists(f'{self.config.export_cluster}'):
+            os.makedirs(f'{self.config.export_cluster}')
+        with open(f'{self.config.export_cluster}/id2label.json', 'w', encoding='utf-8') as f:
+            json.dump(id2label, f, ensure_ascii=False, indent=4)
+        #########################################################
+
+        with open(f'{self.config.export_cluster}/cluster_centers.npy', 'wb') as f:
+            np.save(f, self.cluster_centers)
         # Log cluster sample distribution
         cluster_counts = defaultdict(int)
         for label in cluster_labels:
