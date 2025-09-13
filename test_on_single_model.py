@@ -1,5 +1,3 @@
-from config import SimpleClusterConfig
-from build_simple_cluster_router import SimpleClusterRouter
 from dataset_utils import CureBenchDataset
 from models import APIModel
 from get_val_answer import extract_multiple_choice_answer, parse_boxed_answer_or_call_llm
@@ -13,42 +11,28 @@ from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import threading
 
-# Load environment variables
-load_dotenv()
-
-def load_routing_model(config_path: str = "models/val_0/config.json") -> SimpleClusterRouter:
-    """Load the pre-trained routing model"""
-    config = SimpleClusterConfig.from_file(config_path,'data/validation_results.jsonl')
-    router = SimpleClusterRouter(config)
-    
-    # Load the saved cluster models
-    model_dir = "models"  # Default model directory
-    if hasattr(config, 'export_cluster') and config.export_cluster:
-        model_dir = config.export_cluster
-    
-    router = SimpleClusterRouter.from_saved_models(config, model_dir)
-    return router
 
 def process_single_question(
     question_data: Dict,
-    models: Dict,
-    selected_models: List[str],
-    available_models: List[str],
+    model: APIModel,
     writer_lock: threading.Lock,
     writer: csv.DictWriter
 ) -> None:
     question_id = question_data['id']
     question_type = question_data['question_type']
-    
-    # Route the question to get best model(s)
-    if not selected_models:
-        print(f"\033[31mWarning: No models selected for question {question_id}\033[0m")
-        selected_models = available_models[:1]  # Fallback to first available model
-    
-    # Use the first selected model (can be extended to use multiple)
-    model_name = selected_models[0]
-    model = models[model_name]
-    
+
+    # if id with the model already in submissions/submission.csv
+
+    with open('results/id2model_map.json', 'r', encoding='utf-8') as f:
+        id2model_map = json.load(f)
+    if question_id in id2model_map and id2model_map[question_id] == model.model_name:
+        with open('submissions/submission.csv', 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                if row['id'] == question_id:
+                    writer.writerow(row)
+                    return
+
     # Generate answer
     if question_type == 'multi_choice':
         prompt = f"The following is a multiple-choice question about medicine. Question: {question_data['question']}\n\nFirst, please think through the question carefully, considering the relevant knowledge and possible reasoning. Then, provide your final answer in the format \\boxed{{}}."
@@ -56,7 +40,7 @@ def process_single_question(
         prompt = f"The following is an open-ended question about medicine. Provide a comprehensive answer.\n\nQuestion: {question_data['question']}\n\nAnswer:"
     
     response, reasoning_trace = model.inference(prompt)
-
+    import pdb;pdb.set_trace()
     # Extract answer based on question type
     if question_type == 'multi_choice':
         answer = parse_boxed_answer_or_call_llm(
@@ -79,27 +63,21 @@ def process_single_question(
             'choice': answer,
             'reasoning': reasoning_trace
         })
-    
-    return f"Processed question ID: {question_id} with model {model_name}"
 
 
-def process_questions_with_routing(
+
+def process_questions(
     test_dataset: CureBenchDataset, 
-    router: SimpleClusterRouter,
+    model: APIModel,
     output_file: str = "submission.csv"
 ) -> None:
     """
-    Process all questions using the routing model to select the best model,
-    generate answers, and save results in submission format.
+        Process all questions using the routing model to select the best model,
+        generate answers, and save results in submission format.
     """
-    # Initialize API models
-    api_url = os.getenv('OPENAI_BASE_URL')
-    api_key = os.getenv('OPENAI_API_KEY')
+
     
-    # Get all available models from the router
-    available_models = router.available_models
-    models = {model: APIModel(model, api_url, api_key) for model in available_models}
-    
+
     # Prepare output file
     output_path = Path(output_file)
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -111,50 +89,45 @@ def process_questions_with_routing(
         
         # Thread-safe writer lock
         writer_lock = threading.Lock()
-        # import pdb; pdb.set_trace()
-        selected_models_list = router.route_queries_batch([question_data['question'] for question_data in test_dataset])
-        id2model_map = {question_data['id']: selected_models[0] for question_data, selected_models in zip(test_dataset, selected_models_list)}
-        with open('results/id2model_map.json', 'w', encoding='utf-8') as f:
-            json.dump(id2model_map, f, ensure_ascii=False, indent=4)
-        # return
+        
         # Process questions in parallel with tqdm progress bar
-        with ThreadPoolExecutor(max_workers=12) as executor:
+        with ThreadPoolExecutor(max_workers=1) as executor:
             futures = [
                 executor.submit(
                     process_single_question,
-                    test_dataset[i],
-                    models,
-                    selected_models,
-                    available_models,
+                    test_data,
+                    model,
                     writer_lock,
                     writer
                 )
-                for i,selected_models in enumerate(selected_models_list)
+                for test_data in test_dataset
             ]
             
             for future in tqdm(as_completed(futures), total=len(test_dataset), desc="Processing questions"):
-                result = future.result()
-                # print(result)
+                future.result()
 
 def main():
     # Load the routing model
     print("Loading routing model...")
-    router = load_routing_model()
     
     # Load validation dataset
     print("Loading validation dataset...")
     test_dataset = CureBenchDataset('raw_data/curebench_testset_phase1_with_tags.jsonl')
     print(f"Loaded {len(test_dataset)} testset questions")
+
+    load_dotenv()
+    api_url = os.getenv('OPENAI_BASE_URL')
+    api_key = os.getenv('OPENAI_API_KEY')
+    models = ['openai/gpt-4o', 'google/gemini-2.5-flash']
+    for model in models:
+        api_model = APIModel(model, api_url, api_key)
+        process_questions(test_dataset, api_model, f'submissions/submission_{model.split("/")[-1]}.csv')
     
-    # Process questions and save results
-    print("Processing questions with routing...")
-    process_questions_with_routing(test_dataset, router)
-    
-    print("Processing completed! Results saved to submission.csv")
+    print(f"Processing completed! Results saved to submissions/submission_{model.split('/')[-1]}.csv")
 
 if __name__ == '__main__':
     main()
 
 """
-python test_simple_cluster_router.py 
+python test_on_single_model.py
 """
